@@ -12,18 +12,12 @@ var TEXTBOX_WIDTH = 100
 var lifeLines = [];
 var arrows = [];
 
-var createLifeLineFlag = true;
-
 function startGame() {
 	canvas = document.getElementById('diagram');
 	ctx = canvas.getContext('2d');
 
 	cleanup();
 }
-
-var dragging = false;
-
-
 
 function reDraw() {
 	ctx.clearRect(0,0,canvas.width,canvas.height);
@@ -37,10 +31,7 @@ function reDraw() {
 	}
 }
 
-function move() {
-	createLifeLineFlag = !createLifeLineFlag;
-	drawLifeLine();
-}
+
 
 var cleanup = function() {}
 

@@ -43,6 +43,8 @@ function drawArrowDown(event) {
     reDraw();
 }
 
+var dragging = false;
+
 function drawArrowMove(event){
 	event = event || window.event;
     x = event.pageX - canvas.offsetLeft;

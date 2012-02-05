@@ -26,6 +26,7 @@ function LifeLine(x){
 	this.handleClick = function(xClick, yClick){
 		selected = (xClick>=x && xClick<=x+w) && (yClick>=y && yClick<=y+h);
 		moveOffset = xClick - x;
+		return selected;
 	}
 
 	var moveOffset = 0;
@@ -46,33 +47,12 @@ function LifeLine(x){
 }
 
 function lifeLineMouseDown(event) {
-	dragging = true;
 	event = event || window.event;
     x = event.pageX - canvas.offsetLeft;
     y = event.pageY - canvas.offsetLeft;
-	if (createLifeLineFlag){
-		newLifeLine(x);
-	} else {
-		for (var i=0; i<lifeLines.length; i++){
-			var ll = lifeLines[i];
-			ll.handleClick(x,y);
-		}
-	}
+	newLifeLine(x);
 	reDraw();
 }
-
-function lifeLineMouseMove(event) {
-	if (dragging) {
-		event = event || window.event;
-	    x = event.pageX - canvas.offsetLeft;
-	    y = event.pageY - canvas.offsetLeft;
-	    for (var i=0; i<lifeLines.length; i++){
-			var ll = lifeLines[i];
-			ll.handleMove(x,y);
-		}
-	}
-	reDraw();
-} 
 
 function newLifeLine(x) {
 	var lifeLine = new LifeLine(x);
@@ -80,22 +60,10 @@ function newLifeLine(x) {
 	lifeLine.draw();
 }
 
-function lifeLineMouseUp(event){
-	for (var i=0; i<lifeLines.length; i++){
-		var ll = lifeLines[i];
-	}
-	dragging = false;
-	reDraw();
-}
-
 function drawLifeLine() {
 	cleanup();
 	document.addEventListener('mousedown', lifeLineMouseDown, false);
-	document.addEventListener('mouseup', lifeLineMouseUp, false);
-	document.addEventListener('mousemove', lifeLineMouseMove, false);	
 	cleanup = function() {
 		document.removeEventListener('mousedown', lifeLineMouseDown, false);
-		document.removeEventListener('mouseup', lifeLineMouseUp, false);
-		document.removeEventListener('mousemove', lifeLineMouseMove, false);
 	}
 }
