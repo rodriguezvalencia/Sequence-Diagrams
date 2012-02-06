@@ -16,13 +16,26 @@ function moveDown(event) {
 	event = event || window.event;
    	var x = event.pageX - canvas.offsetLeft;
     var y = event.pageY - canvas.offsetLeft;
-	// select object to move if null
-	for (var i=0; i<lifeLines.length; i++){
-		var ll = lifeLines[i];
-		if (ll.handleClick(x,y)) {
-			moving = ll;
+    // deselect previous
+    if (moving != null) {
+    	moving.selected = false;
+	}
+
+	for (var i=0; i<arrows.length; i++){
+		var arrow = arrows[i];
+		if (arrow.handleClick(x,y)) {
+			console.log("Moving is " + moving);
+			moving = arrow;
 		}
 	}
+	if (moving == null) {
+		for (var i=0; i<lifeLines.length; i++){
+			var ll = lifeLines[i];
+			if (ll.handleClick(x,y)) {
+				moving = ll;
+			}
+		}
+	}	
 	reDraw();
 }
 

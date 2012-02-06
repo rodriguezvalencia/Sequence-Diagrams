@@ -2,10 +2,19 @@ function Arrow(start,end, y){
 	var s = start;
 	var e = end;
 	var h = (y<MARGIN_TOP+TEXTBOX_HEIGHT)?MARGIN_TOP+TEXTBOX_HEIGHT+10:y;
+	var selected = false;
 
 	this.draw = function() {
 		ctx.beginPath();
 		var p = (e.x()>s.x())?10:-10;
+		if (selected){
+			ctx.lineWidth = 2;
+   			ctx.strokeStyle = "#ff0000";
+   			ctx.fillStyle = "#ff0000";
+   			console.log("Arrow selected");
+   		} else {
+   			console.log("Arrow not selected");
+   		}
 		ctx.moveTo(s.x()+s.w()/2, h);
 		ctx.lineTo(e.x()+e.w()/2, h);
 		ctx.lineTo(e.x()+e.w()/2-p, h-6);
@@ -13,6 +22,37 @@ function Arrow(start,end, y){
 		ctx.lineTo(e.x()+e.w()/2, h);
 		ctx.fill();	
 		ctx.stroke();
+		ctx.lineWidth = 1;
+   		ctx.strokeStyle = "#000000";
+   		ctx.fillStyle = "#000000";
+	}
+
+	this.handleClick = function(xClick,yClick){
+		selected = (xClick>=this.x() && xClick<=this.x()+this.w()) && (yClick>=this.y() && yClick<=this.y()+this.h());
+		console.log('result ' + x);
+		return selected;
+	}
+
+	this.handleMove = function(xMove, yMove) {
+		if (selected) {
+			h = (yMove<MARGIN_TOP+TEXTBOX_HEIGHT)?MARGIN_TOP+TEXTBOX_HEIGHT+10:yMove;
+		}
+	}
+
+	this.x = function() {
+		return (s.x()<=e.x())?s.x():e.x();
+	}
+
+	this.w = function() {
+		return (s.x()>=e.x())?s.x():e.x();		
+	}
+
+	this.y = function() {
+		return h-8;
+	}
+
+	this.h = function() {
+		return h+8;
 	}
 }
 
