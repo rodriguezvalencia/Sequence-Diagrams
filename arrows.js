@@ -11,9 +11,14 @@ function Arrow(start,end, y){
 		ctx.beginPath();
 		var p = (e.x()>s.x())?10:-10;
 		if (selected){
-			ctx.lineWidth = 2;
-   			ctx.strokeStyle = "#ff0000";
-   			ctx.fillStyle = "#ff0000";
+			ctx.fillRect(s.x()+s.w()/2-5, h-5, 10, 10);
+			if (s == e) {
+				ctx.fillRect(s.x()+s.w()/2+SELF_ARROW_WIDTH-5, h-5, 10, 10);
+				ctx.fillRect(s.x()+s.w()/2+SELF_ARROW_WIDTH-5, h-5+SELF_ARROW_HEIGHT, 10, 10);
+				ctx.fillRect(e.x()+e.w()/2-5, h-5+SELF_ARROW_HEIGHT, 10, 10);
+			} else {
+				ctx.fillRect(e.x()+e.w()/2-5, h-5, 10, 10);
+			}
    		}
 		ctx.moveTo(s.x()+s.w()/2, h);
    		if (start != end) {
@@ -33,22 +38,12 @@ function Arrow(start,end, y){
 			ctx.lineTo(s.x()+s.w()/2, h+SELF_ARROW_HEIGHT);		
 		}
 		ctx.fill();	
-		ctx.lineWidth = 1;
-   		ctx.strokeStyle = "#000000";
-   		ctx.fillStyle = "#000000";
 	}
 
 	var offset = 0;
 	this.handleClick = function(xClick,yClick){
 		// w is the rightmost x coord value of the arrow, not the width
 		selected = (xClick>=this.x() && xClick<=this.w()) && (yClick>=this.y() && yClick<=this.y()+this.h());
-		console.log("xClick " + xClick);
-		console.log("yClick " + yClick);
-		console.log("x " + this.x());
-		console.log("w " + this.w());
-		console.log("y " + this.y());
-		console.log("h " + this.h());
-		console.log("*****************");
 		offset = y - yClick;
 		return selected;
 	}
@@ -57,6 +52,7 @@ function Arrow(start,end, y){
 		if (selected) {
 			h = (yMove<MARGIN_TOP+TEXTBOX_HEIGHT)?MARGIN_TOP+TEXTBOX_HEIGHT+10:yMove;
 			h = h+offset;
+			handleLifeLineHeights((s!=e)?h:h+SELF_ARROW_HEIGHT);
 		}
 	}
 
@@ -129,6 +125,7 @@ function drawArrowMove(event){
 			var ll = lifeLines[i];
 			if (ll.pointInside(x, y)) {
 				tempArrow = new Arrow(arrowStart, ll, y);
+				handleLifeLineHeights((arrowStart!=ll)?y:y+SELF_ARROW_HEIGHT);
 			}
 		}
 		if (tempArrow == null) {
@@ -147,4 +144,10 @@ function drawArrow() {
 		document.removeEventListener('mousedown', drawArrowDown, false);
 		document.removeEventListener('mousemove', drawArrowMove, false);
 	};
+}
+
+function handleLifeLineHeights(h){
+	if (h>lifeLineHeights) {
+		lifeLineHeights = h;
+	}
 }

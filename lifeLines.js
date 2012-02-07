@@ -55,7 +55,7 @@ function lifeLineMouseDown(event) {
 }
 
 function newLifeLine(x) {
-	var lifeLine = new LifeLine(x);
+	var lifeLine = new LifeLine(Math.max(0, x-TEXTBOX_WIDTH/2));
 	lifeLines.push(lifeLine);
 	lifeLine.draw();
 }
