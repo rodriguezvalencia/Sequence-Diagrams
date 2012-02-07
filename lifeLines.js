@@ -13,9 +13,6 @@ function LifeLine(x){
 		ctx.stroke();
 		if (selected) {
 			this.paintSelect();
-			console.log("lifeline selected");
-		} else {
-			console.log("lifeline not selected");
 		}
 	}
 
