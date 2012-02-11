@@ -15,7 +15,7 @@ var arrows = [];
 function startGame() {
 	canvas = document.getElementById('diagram');
 	ctx = canvas.getContext('2d');
-
+	document.addEventListener('mousedown', cleanup, false);
 	cleanup();
 }
 
@@ -29,11 +29,18 @@ function reDraw() {
 		var a = arrows[i];
 		a.draw();
 	}
+	drawActivationBoxes();
 }
 
+var cleanup = function() {
+	for (var i = lifeLines.length - 1; i >= 0; i--) {
+		lifeLines[i].deselect();
+	};
 
-
-var cleanup = function() {}
+	for (var i = arrows.length - 1; i >= 0; i--) {
+		arrows[i].deselect();
+	};
+}
 
 
 

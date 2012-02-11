@@ -44,6 +44,12 @@ function LifeLine(x){
 
 	this.x = function() { return x; }
 	this.w = function() { return w; }
+
+	this.center = function() {
+		return x + w/2;
+	}
+
+	this.deselect = function () {selected = false;}
 }
 
 function lifeLineMouseDown(event) {

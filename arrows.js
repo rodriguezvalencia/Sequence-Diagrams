@@ -44,14 +44,14 @@ function Arrow(start,end, y){
 	this.handleClick = function(xClick,yClick){
 		// w is the rightmost x coord value of the arrow, not the width
 		selected = (xClick>=this.x() && xClick<=this.w()) && (yClick>=this.y() && yClick<=this.y()+this.h());
-		offset = y - yClick;
+		offset = this.realY() - yClick;
 		return selected;
 	}
 
 	this.handleMove = function(xMove, yMove) {
 		if (selected) {
 			h = (yMove<MARGIN_TOP+TEXTBOX_HEIGHT)?MARGIN_TOP+TEXTBOX_HEIGHT+10:yMove;
-			h = h+offset;
+			h = h - offset;
 			handleLifeLineHeights((s!=e)?h:h+SELF_ARROW_HEIGHT);
 		}
 	}
@@ -76,6 +76,10 @@ function Arrow(start,end, y){
 		}
 	}
 
+	this.realY = function() {
+		return h;
+	}
+
 	this.h = function() {
 		if (s == e) {
 			return SELF_ARROW_HEIGHT;
@@ -83,6 +87,14 @@ function Arrow(start,end, y){
 			return 16;
 		}
 	}
+
+	this.s = function() {return s}
+	this.e = function() {return e}
+
+	this.hasRightDir = function() {return s.x()<e.x()}
+	this.hasLeftDir = function() {return s.x()>e.x()}
+
+	this.deselect = function () {selected = false;}
 }
 
 var arrowStart = null;
@@ -110,6 +122,7 @@ function drawArrowDown(event) {
 	}
 	
     reDraw();
+	drawActivationBoxes();
 }
 
 var dragging = false;

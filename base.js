@@ -24,7 +24,6 @@ function moveDown(event) {
 	for (var i=0; i<arrows.length; i++){
 		var arrow = arrows[i];
 		if (arrow.handleClick(x,y)) {
-			console.log("Moving is " + moving);
 			moving = arrow;
 		}
 	}
