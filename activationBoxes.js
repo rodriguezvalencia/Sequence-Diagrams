@@ -10,10 +10,11 @@ function drawActivationBoxes(){
 		//var actBox;
 		for (var j=0; j<sortedArrows.length; j++) {
 			var a = sortedArrows[j];
+
 			if (arrowIn(ll, a)){
 				// create a new actBox
 				//actBox = (new ActivationBox(ll, a.realY(), 10));
-				activationBoxes.push(new ActivationBox(ll, a.realY(), -1));
+				activationBoxes.push(new ActivationBox(ll.center(), a.realY(), -1));
 			} else if (arrowOut(ll, a)){
 				// set actBox h and push
 				//actBox.setH(a.realY()-actBox.y());
@@ -25,36 +26,52 @@ function drawActivationBoxes(){
 					}
 				}
 			}
+			// Arrows in/out same lifeLine
+			if (a.s() == a.e() && a.s() == ll) {
+				if (activationBoxes.length>0 && activationBoxes[activationBoxes.length-1].h() == -1) {
+					// the actBox is inside another actBox	
+					var newActBox = new ActivationBox(a.s().center()+3, a.realY(), 30);
+					activationBoxes.unshift(newActBox);
+				} else {
+					// the actBox is outside another actBox
+					console.log("Draw selfArrow outide actBox: "+a.realY());
+					drawActBoxRect(a.s().center(), a.realY(), 30);
+				}
+			}
 		}
 	}
 
-	for (var j=0; j<activationBoxes.length; j++){
-		activationBoxes[j].draw();
+	for (var j=activationBoxes.length; j>0; j--){
+		activationBoxes[j-1].draw();
 	}
 }
 
-function ActivationBox(lifeLine, yCoord, height) {
-	var ll = lifeLine;
+function ActivationBox(x, yCoord, height) {
+	var x = x;
 	var y = yCoord;
 	var h = height;
 
-	this.ll = function() {return ll}
+	this.x = function() {return x}
 	this.y = function() {return y}
 	this.h = function() {return h}
 
 	this.setH = function(newH) {h = newH}
 	this.draw = function() {
-		ctx.fillStyle = "rgb(255,255,255)";
-		ctx.fillRect( this.ll().center()-3, 
-						y-10, 
-						6, 
-						Math.max(20,h+20));
-		ctx.fillStyle = "rgb(0,0,0)";
-		ctx.strokeRect( this.ll().center()-3, 
-						y-10, 
-						6, 
-						Math.max(20,h+20));
+		drawActBoxRect(x, y, h);
 	}
+}
+
+function drawActBoxRect(center, y, h) {
+	ctx.fillStyle = "rgb(255,255,255)";
+	ctx.fillRect( center-3, 
+				y-10, 
+				6, 
+				Math.max(20,h+20));
+	ctx.fillStyle = "rgb(0,0,0)";
+	ctx.strokeRect( center-3, 
+				y-10, 
+				6, 
+				Math.max(20,h+20));
 }
 
 function arrowIn(ll,a) {
