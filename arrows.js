@@ -9,7 +9,7 @@ function Arrow(start,end, y){
 
 	this.draw = function() {
 		ctx.beginPath();
-		var p = (e.x()>s.x())?10:-10;
+		var p = (e.x()<s.x());
 		if (selected){
 			ctx.fillRect(s.x()+s.w()/2-5, h-5, 10, 10);
 			if (s == e) {
@@ -23,21 +23,15 @@ function Arrow(start,end, y){
 		ctx.moveTo(s.x()+s.w()/2, h);
    		if (start != end) {
 			ctx.lineTo(e.x()+e.w()/2, h);
-			ctx.lineTo(e.x()+e.w()/2-p, h-6);
-			ctx.lineTo(e.x()+e.w()/2-p, h+6);
-			ctx.lineTo(e.x()+e.w()/2, h);
-			ctx.stroke();
+			ctx.stroke();		
+			drawTriangle(e.x()+e.w()/2,h,p);
 		} else {
 			ctx.lineTo(s.x()+s.w()/2+SELF_ARROW_WIDTH, h);	
 			ctx.lineTo(s.x()+s.w()/2+SELF_ARROW_WIDTH, h+SELF_ARROW_HEIGHT);	
 			ctx.lineTo(s.x()+s.w()/2, h+SELF_ARROW_HEIGHT);	
 			ctx.stroke();
-			ctx.beginPath();
-			ctx.moveTo(s.x()+s.w()/2-p, h-6+SELF_ARROW_HEIGHT);
-			ctx.lineTo(s.x()+s.w()/2-p, h+6+SELF_ARROW_HEIGHT);
-			ctx.lineTo(s.x()+s.w()/2, h+SELF_ARROW_HEIGHT);		
+			drawTriangle(e.x()+e.w()/2,h+SELF_ARROW_HEIGHT,true);
 		}
-		ctx.fill();	
 	}
 
 	var offset = 0;
@@ -123,6 +117,16 @@ function drawArrowDown(event) {
 	
     reDraw();
 	drawActivationBoxes();
+}
+
+function drawTriangle(x, y, left){
+	var p = (left)?-10:10;
+	ctx.clearRect(x-p,y-6,p,12);
+	ctx.beginPath();
+	ctx.lineTo(x-p, y-6);
+	ctx.lineTo(x-p, y+6);
+	ctx.lineTo(x, y);
+	ctx.fill();
 }
 
 var dragging = false;
