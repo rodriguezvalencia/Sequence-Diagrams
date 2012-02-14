@@ -1,3 +1,11 @@
+function deleteElement() {
+	cleanup();
+	document.addEventListener('click', tryDelete, false);
+	cleanup = function() {
+		document.removeEventListener('click', tryDelete, false);
+	};
+}
+
 function move() {
 	cleanup();
 	document.addEventListener('mousedown', moveDown, false);

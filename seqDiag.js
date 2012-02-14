@@ -42,6 +42,43 @@ var cleanup = function() {
 	};
 }
 
+var tryDelete = function(event) {
+	event = event || window.event;
+    x = event.pageX - canvas.offsetLeft;
+    y = event.pageY - canvas.offsetLeft;
+
+    var success = false;
+
+    for(var i=0; i<arrows.length; i++){
+    	var a = arrows[i];
+    	if (a.handleClick(x,y)) {
+    		success = true;
+    		if (confirm("Do you really want to delete this arrow?")){
+    			arrows.splice(i,1);
+    		}
+    	}
+    }
+
+    if (!success) {
+    	for (var j=0; j<lifeLines.length; j++) {
+	    	var ll = lifeLines[j];
+	    	if (ll.handleClick(x,y)) {
+	    		success = true;
+	    		if (confirm("Do you really want to delete this lifeline?")){
+	    			for (var k=0; k<arrows.length; k++) {
+	    				if (arrows[k].e() == ll || arrows[k].s() == ll) {
+	    					arrows.splice(k,1);
+	    					k--;
+	    				}
+	    			}
+	    			lifeLines.splice(j,1);
+	    		}
+	    	}
+    	}
+    }
+    reDraw();
+}
+
 
 
 
