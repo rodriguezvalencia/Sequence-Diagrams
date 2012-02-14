@@ -25,7 +25,7 @@ function drawActivationBoxes(){
 				}
 			} else if (a.e() == ll && a.e() != a.s()) {
 				// arrow comes from the right
-				drawTriangle(a.e().center()+3, a.realY(),true);
+				drawTriangle(a.e().center()+3, a.realY(),true, 1);
 			}
 
 			// Arrows in/out same lifeLine

@@ -119,7 +119,7 @@ function drawArrowDown(event) {
 	drawActivationBoxes();
 }
 
-function drawTriangle(x, y, left){
+function drawTriangle(x, y, left, optional){
 	var p = (left)?-10:10;
 	ctx.clearRect(x-p,y-6,p,12);
 	ctx.beginPath();
