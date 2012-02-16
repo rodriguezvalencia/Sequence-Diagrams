@@ -13,6 +13,7 @@ var lifeLines = [];
 var arrows = [];
 
 function startGame() {
+	console.log("Starting...");
 	canvas = document.getElementById('diagram');
 	ctx = canvas.getContext('2d');
 	document.addEventListener('mousedown', cleanup, false);

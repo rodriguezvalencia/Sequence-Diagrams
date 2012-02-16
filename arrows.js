@@ -1,11 +1,12 @@
 var SELF_ARROW_WIDTH = 50;
 var SELF_ARROW_HEIGHT = 30;
 
-function Arrow(start,end, y){
+function Arrow(start,end, y, lbl){
 	var s = start;
 	var e = end;
 	var h = (y<MARGIN_TOP+TEXTBOX_HEIGHT)?MARGIN_TOP+TEXTBOX_HEIGHT+10:y;
 	var selected = false;
+	var lbl = lbl;
 
 	this.draw = function() {
 		ctx.beginPath();
@@ -32,6 +33,15 @@ function Arrow(start,end, y){
 			ctx.stroke();
 			drawTriangle(e.x()+e.w()/2,h+SELF_ARROW_HEIGHT,true);
 		}
+		if (lbl != undefined) {
+			ctx.fillText(lbl, this.getCenter() - ctx.measureText(lbl).width/2, h-3);
+		}
+	}
+
+	this.getCenter = function() {
+		min = Math.min(s.center(), e.center());
+		max = Math.max(s.center(), e.center());
+		return min + (max - min)/2;
 	}
 
 	var offset = 0;
@@ -84,6 +94,8 @@ function Arrow(start,end, y){
 
 	this.s = function() {return s}
 	this.e = function() {return e}
+	this.lbl = function() {return lbl}
+	this.setLabel = function(label) { lbl = label; }
 
 	this.hasRightDir = function() {return s.x()<e.x()}
 	this.hasLeftDir = function() {return s.x()>e.x()}
@@ -109,14 +121,23 @@ function drawArrowDown(event) {
 	    if (arrowStart == null) {
 	    	arrowStart = clickedLifeLine;
 	    } else {	
-	    	var arrow = new Arrow(arrowStart, clickedLifeLine, y);
+	    	arrow = new Arrow(arrowStart, clickedLifeLine, y);
 	    	arrows.push(arrow);
-	    	arrowStart = null;
+	    	reDraw();
+			drawActivationBoxes();
+			arrowStart = null;
+	    	$.prompt(txt,{
+				submit: function(v,m,f) {
+					lbl = document.getElementById("alertName").value;
+			    	arrow = arrows[arrows.length-1];
+	    			arrow.setLabel(lbl);
+	    		    reDraw();
+					drawActivationBoxes();
+				},
+				buttons: { Ok:true }
+			});	
 	    }
 	}
-	
-    reDraw();
-	drawActivationBoxes();
 }
 
 function drawTriangle(x, y, left, optional){
