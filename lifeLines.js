@@ -3,7 +3,7 @@ function LifeLine(x, lbl){
 	var y = MARGIN_TOP;
 	var w = TEXTBOX_WIDTH;
 	var h = TEXTBOX_HEIGHT;
-	var selected = false;
+	var selected;
 	var lbl = lbl;
 	
 	this.draw = function() {
@@ -29,6 +29,7 @@ function LifeLine(x, lbl){
 
 	this.handleClick = function(xClick, yClick){
 		selected = (xClick>=x && xClick<=x+w) && (yClick>=y && yClick<=y+h);
+		console.log(selected);
 		moveOffset = xClick - x;
 		return selected;
 	}
@@ -36,7 +37,9 @@ function LifeLine(x, lbl){
 	var moveOffset = 0;
 
 	this.handleMove = function(xMove, yMove) {
+		console.log("Moving this" + selected);
 		if (selected) {
+			console.log("hello");
 			x = xMove - moveOffset;
 		}
 	}
@@ -94,8 +97,8 @@ function newLifeLine(x) {
 
 function drawLifeLine() {
 	cleanup();
-	document.addEventListener('mousedown', lifeLineMouseDown, false);
+	canvas.addEventListener('mousedown', lifeLineMouseDown, false);
 	cleanup = function() {
-		document.removeEventListener('mousedown', lifeLineMouseDown, false);
+		canvas.removeEventListener('mousedown', lifeLineMouseDown, false);
 	}
 }

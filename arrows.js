@@ -179,11 +179,11 @@ function drawArrowMove(event){
 
 function drawArrow() {
 	cleanup();
-	document.addEventListener('mousedown', drawArrowDown, false);
-	document.addEventListener('mousemove', drawArrowMove, false);
+	canvas.addEventListener('mousedown', drawArrowDown, false);
+	canvas.addEventListener('mousemove', drawArrowMove, false);
 	cleanup = function() {
-		document.removeEventListener('mousedown', drawArrowDown, false);
-		document.removeEventListener('mousemove', drawArrowMove, false);
+		canvas.removeEventListener('mousedown', drawArrowDown, false);
+		canvas.removeEventListener('mousemove', drawArrowMove, false);
 	};
 }
 

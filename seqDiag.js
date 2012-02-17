@@ -34,13 +34,13 @@ function reDraw() {
 }
 
 var cleanup = function() {
-	for (var i = lifeLines.length - 1; i >= 0; i--) {
+/*	for (var i = lifeLines.length - 1; i >= 0; i--) {
 		lifeLines[i].deselect();
 	};
 
 	for (var i = arrows.length - 1; i >= 0; i--) {
 		arrows[i].deselect();
-	};
+	}; */
 }
 
 var tryDelete = function(event) {

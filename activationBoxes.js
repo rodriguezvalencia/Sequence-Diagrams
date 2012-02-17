@@ -7,38 +7,54 @@ function drawActivationBoxes(){
 	sortedArrows = arrows.sort(function(x,y) { return x.realY()-y.realY() });
 	for (var i=0; i<sortedLifeLines.length; i++){
 		var ll = sortedLifeLines[i];
-		//var actBox;
-		for (var j=0; j<sortedArrows.length; j++) {
-			var a = sortedArrows[j];
-
-			if (arrowIn(ll, a)){
-				// create a new actBox
-				activationBoxes.push(new ActivationBox(ll.center(), a.realY(), -1));
-				drawTriangle(a.e().center()-3, a.realY(),false);
-			} else if (arrowOut(ll, a)){
-				// set actBox h and push
-				if (activationBoxes.length>0) {
-					var lastActBox = activationBoxes[activationBoxes.length-1];
-					if (lastActBox.h()==-1) {
-						lastActBox.setH(a.realY()-activationBoxes[activationBoxes.length-1].y());
-					}
+		if (i == 0) {
+			var firstArrow, lastArrow = null;
+			for(var k=0; k<sortedArrows.length; k++){
+				if (firstArrow==null && sortedArrows[k].s()==ll) {
+					firstArrow = sortedArrows[k];
 				}
-			} else if (a.e() == ll && a.e() != a.s()) {
-				// arrow comes from the right
-				drawTriangle(a.e().center()+3, a.realY(),true, 1);
+				if (sortedArrows[k].e()==ll) {
+					lastArrow = sortedArrows[k];
+				}
+				if (lastArrow!=null && firstArrow!=null) {
+					activationBoxes.push(new ActivationBox(firstArrow.s().center(),firstArrow.realY(),lastArrow.realY()-firstArrow.realY()));
+					drawTriangle(lastArrow.e().center()+3, lastArrow.realY(),true);
+				}
 			}
+		} else {
+			//var actBox;
+			for (var j=0; j<sortedArrows.length; j++) {
+				var a = sortedArrows[j];
 
-			// Arrows in/out same lifeLine
-			if (a.s() == a.e() && a.s() == ll) {
-				if (activationBoxes.length>0 && activationBoxes[activationBoxes.length-1].h() == -1) {
-					// the actBox is inside another actBox	
-					var newActBox = new ActivationBox(a.s().center()+3, a.realY(), 30);
-					activationBoxes.unshift(newActBox);
-					drawTriangle(a.s().center()+6, a.realY()+SELF_ARROW_HEIGHT,true);
-				} else {
-					// the actBox is outside another actBox
-					drawTriangle(a.s().center()+3, a.realY()+SELF_ARROW_HEIGHT,true);
-					drawActBoxRect(a.s().center(), a.realY(), 30);
+				if (arrowIn(ll, a)){
+					// create a new actBox
+					activationBoxes.push(new ActivationBox(ll.center(), a.realY(), -1));
+					drawTriangle(a.e().center()-3, a.realY(),false);
+				} else if (arrowOut(ll, a)){
+					// set actBox h and push
+					if (activationBoxes.length>0) {
+						var lastActBox = activationBoxes[activationBoxes.length-1];
+						if (lastActBox.h()==-1) {
+							lastActBox.setH(a.realY()-activationBoxes[activationBoxes.length-1].y());
+						}
+					}
+				} else if (a.e() == ll && a.e() != a.s()) {
+					// arrow comes from the right
+					drawTriangle(a.e().center()+3, a.realY(),true, 1);
+				}
+
+				// Arrows in/out same lifeLine
+				if (a.s() == a.e() && a.s() == ll) {
+					if (activationBoxes.length>0 && activationBoxes[activationBoxes.length-1].h() == -1) {
+						// the actBox is inside another actBox	
+						var newActBox = new ActivationBox(a.s().center()+3, a.realY(), 30);
+						activationBoxes.unshift(newActBox);
+						drawTriangle(a.s().center()+6, a.realY()+SELF_ARROW_HEIGHT,true);
+					} else {
+						// the actBox is outside another actBox
+						drawTriangle(a.s().center()+3, a.realY()+SELF_ARROW_HEIGHT,true);
+						drawActBoxRect(a.s().center(), a.realY(), 30);
+					}
 				}
 			}
 		}
