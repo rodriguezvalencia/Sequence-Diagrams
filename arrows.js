@@ -129,7 +129,6 @@ function drawArrowDown(event) {
 	    	$.prompt(txt,{
 				submit: function(v,m,f) {
 					lbl = document.getElementById("alertName").value;
-			    	arrow = arrows[arrows.length-1];
 	    			arrow.setLabel(lbl);
 	    		    reDraw();
 					drawActivationBoxes();

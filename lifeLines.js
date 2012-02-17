@@ -1,9 +1,10 @@
-function LifeLine(x){
+function LifeLine(x, lbl){
 	var x = x;
 	var y = MARGIN_TOP;
 	var w = TEXTBOX_WIDTH;
 	var h = TEXTBOX_HEIGHT;
 	var selected = false;
+	var lbl = lbl;
 	
 	this.draw = function() {
 		ctx.strokeRect(x, y, w, h);
@@ -13,6 +14,9 @@ function LifeLine(x){
 		ctx.stroke();
 		if (selected) {
 			this.paintSelect();
+		}
+		if (lbl != undefined) {
+			ctx.fillText(lbl, this.center() - ctx.measureText(lbl).width/2, y + TEXTBOX_HEIGHT/2);
 		}
 	}
 
@@ -50,19 +54,39 @@ function LifeLine(x){
 	}
 
 	this.deselect = function () {selected = false;}
+	this.setLabel = function(label) { 
+		lbl = label; 
+		w = Math.max(w, ctx.measureText(lbl).width+6);
+	}
 }
 
+var creating = false;
+
 function lifeLineMouseDown(event) {
-	event = event || window.event;
-    x = event.pageX - canvas.offsetLeft;
-    y = event.pageY - canvas.offsetLeft;
-	newLifeLine(x);
-	reDraw();
+	if (!creating) {
+		event = event || window.event;
+	    x = event.pageX - canvas.offsetLeft;
+	    y = event.pageY - canvas.offsetLeft;
+		newLifeLine(x);
+		reDraw();
+	}
 }
 
 function newLifeLine(x) {
+	creating = true;
 	var lifeLine = new LifeLine(Math.max(0, x-TEXTBOX_WIDTH/2));
 	lifeLines.push(lifeLine);
+	console.log("outside prompt" + lifeLines.length);
+	$.prompt(txt,{
+		submit: function(v,m,f) {
+				lbl = document.getElementById("alertName").value;
+				console.log("inside prompt" + lifeLines.length);
+			    lifeLine.setLabel(lbl);
+				reDraw();
+				creating = false;
+			},
+		buttons: { Ok:true }
+	});	
 	lifeLine.draw();
 }
 
