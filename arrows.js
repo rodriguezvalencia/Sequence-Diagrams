@@ -127,13 +127,17 @@ function drawArrowDown(event) {
 			drawActivationBoxes();
 			arrowStart = null;
 	    	$.prompt(txt,{
+				loaded: function() {
+						document.getElementById("alertName").focus();			
+					},
 				submit: function(v,m,f) {
 					lbl = document.getElementById("alertName").value;
 	    			arrow.setLabel(lbl);
 	    		    reDraw();
 					drawActivationBoxes();
 				},
-				buttons: { Ok:true }
+				buttons: { Ok:true },
+				overlayspeed: 'fast'	
 			});	
 	    }
 	}
