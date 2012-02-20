@@ -60,3 +60,16 @@ function moveMove(event) {
 function moveUp() {
 	moving = null;
 }
+
+function DragSquare(x, y, f) {
+	var x = x;
+	var y = y;
+	var drag = f;
+
+	this.x = function() {return x}
+	this.y = function() {return y}
+
+	this.draw = function() {
+		ctx.fillRect(x-5, y-5, 10, 10);
+	}
+}

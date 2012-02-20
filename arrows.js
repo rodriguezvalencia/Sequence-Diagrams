@@ -11,16 +11,16 @@ function Arrow(start,end, y, lbl){
 	this.draw = function() {
 		ctx.beginPath();
 		var p = (e.x()<s.x());
-		if (selected){
-			ctx.fillRect(s.x()+s.w()/2-5, h-5, 10, 10);
-			if (s == e) {
-				ctx.fillRect(s.x()+s.w()/2+SELF_ARROW_WIDTH-5, h-5, 10, 10);
-				ctx.fillRect(s.x()+s.w()/2+SELF_ARROW_WIDTH-5, h-5+SELF_ARROW_HEIGHT, 10, 10);
-				ctx.fillRect(e.x()+e.w()/2-5, h-5+SELF_ARROW_HEIGHT, 10, 10);
-			} else {
-				ctx.fillRect(e.x()+e.w()/2-5, h-5, 10, 10);
-			}
-   		}
+		// if (selected){
+		// 	ctx.fillRect(s.x()+s.w()/2-5, h-5, 10, 10);
+		// 	if (s == e) {
+		// 		ctx.fillRect(s.x()+s.w()/2+SELF_ARROW_WIDTH-5, h-5, 10, 10);
+		// 		ctx.fillRect(s.x()+s.w()/2+SELF_ARROW_WIDTH-5, h-5+SELF_ARROW_HEIGHT, 10, 10);
+		// 		ctx.fillRect(e.x()+e.w()/2-5, h-5+SELF_ARROW_HEIGHT, 10, 10);
+		// 	} else {
+		// 		ctx.fillRect(e.x()+e.w()/2-5, h-5, 10, 10);
+		// 	}
+  //  		}
 		ctx.moveTo(s.x()+s.w()/2, h);
    		if (start != end) {
 			ctx.lineTo(e.x()+e.w()/2, h);
@@ -49,7 +49,16 @@ function Arrow(start,end, y, lbl){
 		// w is the rightmost x coord value of the arrow, not the width
 		selected = (xClick>=this.x() && xClick<=this.w()) && (yClick>=this.y() && yClick<=this.y()+this.h());
 		offset = this.realY() - yClick;
+		if (selected) {
+			this.createDragSquares();
+		}
 		return selected;
+	}
+
+	this.createDragSquares = function() {
+		dragSquares = [];
+		dragSquares[0] = new DragSquare(s.center(), h, -1);
+		dragSquares[1] = new DragSquare(e.center(), h, -1);
 	}
 
 	this.handleMove = function(xMove, yMove) {
@@ -58,6 +67,7 @@ function Arrow(start,end, y, lbl){
 			h = h - offset;
 			handleLifeLineHeights((s!=e)?h:h+SELF_ARROW_HEIGHT);
 		}
+		this.createDragSquares();
 	}
 
 	this.x = function() {

@@ -11,6 +11,7 @@ var TEXTBOX_WIDTH = 100
 
 var lifeLines = [];
 var arrows = [];
+var dragSquares = [];
 
 function startGame() {
 	console.log("Starting...");
@@ -23,14 +24,15 @@ function startGame() {
 function reDraw() {
 	ctx.clearRect(0,0,canvas.width,canvas.height);
 	for (var i=0; i<lifeLines.length; i++){
-		var ll = lifeLines[i];
-		ll.draw();
+		lifeLines[i].draw();
 	}
 	for (var i=0; i<arrows.length; i++){
-		var a = arrows[i];
-		a.draw();
+		arrows[i].draw();
 	}
 	drawActivationBoxes();
+	for (var i=0; i<dragSquares.length; i++){
+		dragSquares[i].draw();
+	}
 }
 
 var cleanup = function() {
