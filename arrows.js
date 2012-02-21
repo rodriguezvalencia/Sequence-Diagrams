@@ -11,16 +11,6 @@ function Arrow(start,end, y, lbl){
 	this.draw = function() {
 		ctx.beginPath();
 		var p = (e.x()<s.x());
-		// if (selected){
-		// 	ctx.fillRect(s.x()+s.w()/2-5, h-5, 10, 10);
-		// 	if (s == e) {
-		// 		ctx.fillRect(s.x()+s.w()/2+SELF_ARROW_WIDTH-5, h-5, 10, 10);
-		// 		ctx.fillRect(s.x()+s.w()/2+SELF_ARROW_WIDTH-5, h-5+SELF_ARROW_HEIGHT, 10, 10);
-		// 		ctx.fillRect(e.x()+e.w()/2-5, h-5+SELF_ARROW_HEIGHT, 10, 10);
-		// 	} else {
-		// 		ctx.fillRect(e.x()+e.w()/2-5, h-5, 10, 10);
-		// 	}
-  //  		}
 		ctx.moveTo(s.x()+s.w()/2, h);
    		if (start != end) {
 			ctx.lineTo(e.x()+e.w()/2, h);
@@ -136,19 +126,24 @@ function drawArrowDown(event) {
 	    	reDraw();
 			drawActivationBoxes();
 			arrowStart = null;
-	    	$.prompt(txt,{
-				loaded: function() {
-						document.getElementById("alertName").focus();			
+			if (namePromptsActive()) {
+		    	$.prompt(txt,{
+					loaded: function() {
+							document.getElementById("alertName").focus();			
+						},
+					submit: function(v,m,f) {
+						lbl = document.getElementById("alertName").value;
+		    			arrow.setLabel(lbl);
+		    		    reDraw();
+						drawActivationBoxes();
 					},
-				submit: function(v,m,f) {
-					lbl = document.getElementById("alertName").value;
-	    			arrow.setLabel(lbl);
-	    		    reDraw();
-					drawActivationBoxes();
-				},
-				buttons: { Ok:true },
-				overlayspeed: 'fast'	
-			});	
+					buttons: { Ok:true },
+					overlayspeed: 'fast'	
+				});
+			} else {
+				reDraw();
+				drawActivationBoxes();
+			}	
 	    }
 	}
 }

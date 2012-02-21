@@ -82,6 +82,10 @@ var tryDelete = function(event) {
     reDraw();
 }
 
+function namePromptsActive() {;
+	return document.getElementById("name-prompts").checked;
+}
+
 
 
 

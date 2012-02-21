@@ -79,19 +79,24 @@ function newLifeLine(x) {
 	creating = true;
 	var lifeLine = new LifeLine(Math.max(0, x-TEXTBOX_WIDTH/2));
 	lifeLines.push(lifeLine);
-	$.prompt(txt,{
-		loaded: function() {
-				document.getElementById("alertName").focus();			
-			},
-		submit: function(v,m,f) {
-				lbl = document.getElementById("alertName").value;
-			    lifeLine.setLabel(lbl);
-				reDraw();
-				creating = false;
-			},
-		buttons: { Ok:true },
-		overlayspeed: 'fast'
-	});	
+	if (namePromptsActive()) {
+		$.prompt(txt,{
+			loaded: function() {
+					document.getElementById("alertName").focus();			
+				},
+			submit: function(v,m,f) {
+					lbl = document.getElementById("alertName").value;
+				    lifeLine.setLabel(lbl);
+					reDraw();
+					creating = false;
+				},
+			buttons: { Ok:true },
+			overlayspeed: 'fast'
+		});	
+	} else {
+		reDraw();
+		creating = false;		
+	}
 	lifeLine.draw();
 }
 
