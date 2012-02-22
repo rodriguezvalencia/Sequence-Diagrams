@@ -27,19 +27,15 @@ function moveDown(event) {
     // deselect previous
 
 	for (var i=0; i<arrows.length; i++){
-		console.log(1);
 		var arrow = arrows[i];
 		if (arrow.handleClick(x,y)) {
-			console.log(2);
 			moving = arrow;
 		}
 	}
 	if (moving == null) {
-		console.log(3);
 		for (var i=0; i<lifeLines.length; i++){
 			var ll = lifeLines[i];
 			if (ll.handleClick(x,y)) {
-				console.log(4);
 				moving = ll;
 			}
 		}

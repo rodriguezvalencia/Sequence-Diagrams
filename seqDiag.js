@@ -17,6 +17,7 @@ function startGame() {
 	console.log("Starting...");
 	canvas = document.getElementById('diagram');
 	ctx = canvas.getContext('2d');
+	ctx.font = "10pt sans-serif";
 	document.addEventListener('mousedown', cleanup, false);
 	cleanup();
 }
