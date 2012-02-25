@@ -11,10 +11,12 @@ function move() {
 	canvas.addEventListener('mousedown', moveDown, false);
 	canvas.addEventListener('mousemove', moveMove, false);
 	canvas.addEventListener('mouseup', moveUp, false);
+	canvas.addEventListener('dblclick', moveDblClick,false);
 	cleanup = function() {
 		canvas.removeEventListener('mousedown', moveDown, false);
 		canvas.removeEventListener('mousemove', moveMove, false);
 		canvas.removeEventListener('mouseup', moveUp, false);
+		canvas.removeEventListener('dblclick', moveDblClick,false);
 		cleanSelected();
 	};
 }
@@ -26,7 +28,12 @@ function moveDown(event) {
    	var x = event.pageX - canvas.offsetLeft;
     var y = event.pageY - canvas.offsetLeft;
 
-    for (var i=0; i<dragSquares.length; i++) {
+    selectOne(x,y);
+	reDraw();
+}
+
+function selectOne(x,y) {
+	for (var i=0; i<dragSquares.length; i++) {
     	var dragSq = dragSquares[i];
     	if (dragSq.handleClick(x,y)) {
     		moving = dragSq;
@@ -48,7 +55,7 @@ function moveDown(event) {
 			moving = ll;
 		}
 	}	
-	reDraw();
+	return moving;
 }
 
 function moveMove(event) {	
@@ -70,5 +77,27 @@ function moveUp(event) {
 	}	
 	moving = null;
 	reDraw();
+}
+
+function moveDblClick(event) {
+	event = event || window.event;
+   	x = event.pageX - canvas.offsetLeft;
+    y = event.pageY - canvas.offsetLeft;
+    var dblClicked = selectOne(x,y);
+    if (dblClicked && dblClicked.hasOwnProperty('setLabel')) {
+		$.prompt(txt,{
+			loaded: function() {
+					document.getElementById("alertName").focus();			
+				},
+			submit: function(v,m,f) {
+					lbl = document.getElementById("alertName").value;
+				    dblClicked.setLabel(lbl);
+					reDraw();
+				},
+			buttons: { Ok:true },
+			overlayspeed: 'fast'
+		});				
+    }
+    moving = null;
 }
 

@@ -104,6 +104,22 @@ function Arrow(start,end, y, lbl){
 
 	this.handleUp = function(xClick, yClick) {
 	}
+
+	function prompt(theArrow) {
+		$.prompt(txt,{
+			loaded: function() {
+				document.getElementById("alertName").focus();			
+			},
+			submit: function(v,m,f) {
+				lbl = document.getElementById("alertName").value;
+				theArrow.setLabel(lbl);
+				reDraw();
+				drawActivationBoxes();
+			},
+				buttons: { Ok:true },
+				overlayspeed: 'fast'	
+		});
+	}
 }
 
 var arrowStart = null;
@@ -130,19 +146,7 @@ function drawArrowDown(event) {
 			drawActivationBoxes();
 			arrowStart = null;
 			if (namePromptsActive()) {
-		    	$.prompt(txt,{
-					loaded: function() {
-							document.getElementById("alertName").focus();			
-						},
-					submit: function(v,m,f) {
-						lbl = document.getElementById("alertName").value;
-		    			arrow.setLabel(lbl);
-		    		    reDraw();
-						drawActivationBoxes();
-					},
-					buttons: { Ok:true },
-					overlayspeed: 'fast'	
-				});
+				prompt(this);
 			} else {
 				reDraw();
 				drawActivationBoxes();
