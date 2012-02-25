@@ -15,29 +15,37 @@ function move() {
 		canvas.removeEventListener('mousedown', moveDown, false);
 		canvas.removeEventListener('mousemove', moveMove, false);
 		canvas.removeEventListener('mouseup', moveUp, false);
+		cleanSelected();
 	};
 }
 
-var moving = null;
+moving = null;
 
 function moveDown(event) {
 	event = event || window.event;
    	var x = event.pageX - canvas.offsetLeft;
     var y = event.pageY - canvas.offsetLeft;
-    // deselect previous
 
+    for (var i=0; i<dragSquares.length; i++) {
+    	var dragSq = dragSquares[i];
+    	if (dragSq.handleClick(x,y)) {
+    		moving = dragSq;
+    	}	
+    }
+    if (moving == null) {
+    	cleanDrag();
+    }
 	for (var i=0; i<arrows.length; i++){
 		var arrow = arrows[i];
-		if (arrow.handleClick(x,y)) {
+		if (arrow.handleClick(x,y) && moving==null) {
 			moving = arrow;
 		}
 	}
-	if (moving == null) {
-		for (var i=0; i<lifeLines.length; i++){
-			var ll = lifeLines[i];
-			if (ll.handleClick(x,y)) {
-				moving = ll;
-			}
+	
+	for (var i=0; i<lifeLines.length; i++){
+		var ll = lifeLines[i];
+		if (ll.handleClick(x,y) && moving==null) {
+			moving = ll;
 		}
 	}	
 	reDraw();
@@ -53,19 +61,14 @@ function moveMove(event) {
 	reDraw();
 }
 
-function moveUp() {
+function moveUp(event) {
+	if (moving != null) {
+		event = event || window.event;
+    	x = event.pageX - canvas.offsetLeft;
+    	y = event.pageY - canvas.offsetLeft;
+		moving.handleUp(x, y);
+	}	
 	moving = null;
+	reDraw();
 }
 
-function DragSquare(x, y, f) {
-	var x = x;
-	var y = y;
-	var drag = f;
-
-	this.x = function() {return x}
-	this.y = function() {return y}
-
-	this.draw = function() {
-		ctx.fillRect(x-5, y-5, 10, 10);
-	}
-}

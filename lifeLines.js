@@ -29,7 +29,6 @@ function LifeLine(x, lbl){
 
 	this.handleClick = function(xClick, yClick){
 		selected = (xClick>=x && xClick<=x+w) && (yClick>=y && yClick<=y+h);
-		console.log(selected);
 		moveOffset = xClick - x;
 		return selected;
 	}
@@ -37,9 +36,7 @@ function LifeLine(x, lbl){
 	var moveOffset = 0;
 
 	this.handleMove = function(xMove, yMove) {
-		console.log("Moving this" + selected);
 		if (selected) {
-			console.log("hello");
 			x = xMove - moveOffset;
 		}
 	}
@@ -56,10 +53,16 @@ function LifeLine(x, lbl){
 		return x + w/2;
 	}
 
-	this.deselect = function () {selected = false;}
+	this.deselect = function () {
+		selected = false;
+	}
+
 	this.setLabel = function(label) { 
 		lbl = label; 
 		w = Math.max(w, ctx.measureText(lbl).width+6);
+	}
+
+	this.handleUp = function(xClick, yClick) {
 	}
 }
 

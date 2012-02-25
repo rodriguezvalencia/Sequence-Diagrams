@@ -47,8 +47,8 @@ function Arrow(start,end, y, lbl){
 
 	this.createDragSquares = function() {
 		dragSquares = [];
-		dragSquares[0] = new DragSquare(s.center(), h, -1);
-		dragSquares[1] = new DragSquare(e.center(), h, -1);
+		dragSquares[0] = new DragSquare(s.center(), h, -1, this, s, function (start) {s = start;});
+		dragSquares[1] = new DragSquare(e.center(), h, -1, this, e, function (end) {e = end;});
 	}
 
 	this.handleMove = function(xMove, yMove) {
@@ -101,6 +101,9 @@ function Arrow(start,end, y, lbl){
 	this.hasLeftDir = function() {return s.x()>e.x()}
 
 	this.deselect = function () {selected = false;}
+
+	this.handleUp = function(xClick, yClick) {
+	}
 }
 
 var arrowStart = null;

@@ -18,8 +18,6 @@ function startGame() {
 	canvas = document.getElementById('diagram');
 	ctx = canvas.getContext('2d');
 	ctx.font = "10pt sans-serif";
-	document.addEventListener('mousedown', cleanup, false);
-	cleanup();
 }
 
 function reDraw() {
@@ -37,13 +35,6 @@ function reDraw() {
 }
 
 var cleanup = function() {
-/*	for (var i = lifeLines.length - 1; i >= 0; i--) {
-		lifeLines[i].deselect();
-	};
-
-	for (var i = arrows.length - 1; i >= 0; i--) {
-		arrows[i].deselect();
-	}; */
 }
 
 var tryDelete = function(event) {
@@ -87,6 +78,15 @@ function namePromptsActive() {;
 	return document.getElementById("name-prompts").checked;
 }
 
-
+function cleanSelected() {
+	for (var i = 0; i<lifeLines.length; i++) {
+		lifeLines[i].handleClick(-100,-100);
+	};
+	for (var i = 0; i<arrows.length; i++) {
+		arrows[i].handleClick(-100,-100);
+	}; 
+	cleanDrag();
+	reDraw();
+}
 
 
