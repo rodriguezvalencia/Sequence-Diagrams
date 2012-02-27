@@ -7,7 +7,10 @@ function LifeLine(x, lbl){
 	var lbl = lbl;
 	
 	this.draw = function() {
+		ctx.fillStyle="rgb(255,235,205)"
+		ctx.fillRect(x, y, w, h);
 		ctx.strokeRect(x, y, w, h);
+		ctx.fillStyle="rgb(0,0,0)"
 		ctx.beginPath();
 		ctx.moveTo(x+w/2, y+h);
 		ctx.lineTo(x+w/2, lifeLineHeights);

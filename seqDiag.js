@@ -16,6 +16,12 @@ var dragSquares = [];
 function startGame() {
 	console.log("Starting...");
 	canvas = document.getElementById('diagram');
+	buttons=document.getElementsByTagName('buttons').clientHeight;
+	console.log(buttons);
+	//set canvas size to the whole window 
+	canvas.width=window.innerWidth;
+	canvas.height=window.innerHeight-100;
+	console.log("Got a " + canvas.width + "x" + canvas.height + " canvas");
 	ctx = canvas.getContext('2d');
 	ctx.font = "10pt sans-serif";
 }
@@ -75,7 +81,7 @@ var tryDelete = function(event) {
 }
 
 function namePromptsActive() {;
-	return document.getElementById("name-prompts").checked;
+	return document.getElementById("check").checked;
 }
 
 function cleanSelected() {
@@ -87,6 +93,11 @@ function cleanSelected() {
 	}; 
 	cleanDrag();
 	reDraw();
+}
+
+
+function saveDiagram() {
+	Canvas2Image.saveAsPNG(canvas);
 }
 
 

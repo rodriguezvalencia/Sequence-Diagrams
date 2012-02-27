@@ -10,16 +10,18 @@ function drawActivationBoxes(){
 		if (i == 0) {
 			var firstArrow, lastArrow = null;
 			for(var k=0; k<sortedArrows.length; k++){
-				if (firstArrow==null && sortedArrows[k].s()==ll) {
-					firstArrow = sortedArrows[k];
+				if (sortedArrows[k].s()!=sortedArrows[k].e()){
+					if (firstArrow==null && sortedArrows[k].s()==ll) {
+						firstArrow = sortedArrows[k];
+					}
+					if (sortedArrows[k].e()==ll) {
+						lastArrow = sortedArrows[k];
+					}	
 				}
-				if (sortedArrows[k].e()==ll) {
-					lastArrow = sortedArrows[k];
-				}
-				if (lastArrow!=null && firstArrow!=null) {
-					activationBoxes.push(new ActivationBox(firstArrow.s().center(),firstArrow.realY(),lastArrow.realY()-firstArrow.realY()));
-					drawTriangle(lastArrow.e().center()+3, lastArrow.realY(),true);
-				}
+			}
+			if (lastArrow!=null && firstArrow!=null) {
+				activationBoxes.push(new ActivationBox(firstArrow.s().center(),firstArrow.realY(),lastArrow.realY()-firstArrow.realY()));
+				drawTriangle(lastArrow.e().center()+3, lastArrow.realY(),true);
 			}
 		} else {
 			//var actBox;
